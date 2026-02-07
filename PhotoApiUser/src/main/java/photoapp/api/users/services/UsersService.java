@@ -1,7 +1,9 @@
 package photoapp.api.users.services;
 
-import photoapp.api.users.iu.model.CreateUserRequestModel;
+import photoapp.api.users.shared.UserDto;
+
+import java.util.Optional;
 
 public interface UsersService {
-    void createUser(CreateUserRequestModel createUserRequestModel);
+    void createUser(UserDto dto);
 }
