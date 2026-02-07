@@ -77,7 +77,7 @@ public class TokenServiceImpl implements TokenService {
 
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .verifyWith(signingKey) // ✅ agora resolve
+                .verifyWith(signingKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

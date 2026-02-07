@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: user-ws
+
+  devtools:
+    restart:
+      enabled: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.value}
+
+jwt:
+  secret: chave-super-secreta-com-pelo-menos-32-bytes
+  expiration: 3600000
+  refresh-expiration: 8600000
+  issuer: auth-service

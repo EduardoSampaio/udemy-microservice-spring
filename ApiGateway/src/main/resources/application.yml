@@ -1,0 +1,59 @@
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+              lower-case-service-id: true
+
+          routes:
+            # ? AUTH (rota pública)
+            - id: users-auth
+              uri: lb://user-ws
+              predicates:
+                - Path=/user-ws/auth/**
+              filters:
+                - StripPrefix=1
+
+            # ? USERS (rota protegida)
+            - id: users-api
+              uri: lb://user-ws
+              predicates:
+                - Path=/user-ws/users/**
+              filters:
+                - StripPrefix=1
+                - JwtAuthorization
+
+
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true
+    hostname: localhost
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.web.reactive.DispatcherHandler: TRACE
+
+security:
+  jwt:
+    secret: chave-super-secreta-com-pelo-menos-32-bytes
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
